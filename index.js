@@ -3,8 +3,8 @@ var uploader = require("./uploader.js");
 var vkWrap = require('./vkBot.js');
 var credentials = require("./auth.json");
 var env = process.env;
-var login = BOT_LOGIN || credentials.login;
-var pass = BOT_PASS || credentials.password;
+var login = env.BOT_LOGIN || credentials.login;
+var pass = env.BOT_PASS || credentials.password;
 
 var vkBot = new vkWrap(login, pass);
 var fs = require("fs");
