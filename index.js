@@ -21,7 +21,7 @@ try {
 vkBot.authBot();
 memeGenerator.init();
 
-vkBot.addCommand('мем', () => {
+vkBot.addCommand('мем', function() {
 	var reply = vkBot.bodyMsg;
 	var msg = vkBot.bodyMsg.body;
 	var params = msg.split(' ');
