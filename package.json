@@ -1,0 +1,17 @@
+{
+  "name": "vk-meme-bot",
+  "version": "0.0.1",
+  "description": "VK meme-generator bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "_TrueLecter_",
+  "dependencies": {
+    "fontpath-glyph-iterator": "^1.1.0",
+    "fontpath-wordwrap": "^1.0.1",
+    "jimp": "^0.2.27",
+    "load-bmfont": "^1.2.3",
+    "request": "^2.74.0"
+  }
+}
