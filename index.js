@@ -60,7 +60,7 @@ vkBot.addCommand('мем', function() {
 	//console.log("msg", vkBot.bodyMsg);
 });
 
-vkBot.addCommand('рефреш', () => {
+vkBot.addCommand('рефреш', function (){
 	memeGenerator.init();
 	vkBot.sendMessage("20 sec, pls", {attachMessage: false});			
 });
