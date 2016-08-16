@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-let request = require('request'),
+var request = require('request'),
     fs = require('fs');
 
 class dialogBotVK {
@@ -80,7 +80,7 @@ class dialogBotVK {
   getLongPollMessage() {
     request(this.getObject('longpollMessage'), (error, response, body) => {
       try {
-        let data = this.parseJSON(body);
+        var data = this.parseJSON(body);
         if('failed' in data) {
           this.longpollServer();
         } else {
@@ -101,7 +101,7 @@ class dialogBotVK {
   
   getMessage(message) {
     try {
-      let block = message[0];
+      var block = message[0];
       if(6 in block) {
         this.tempMsgID = block[1];
         request(this.getObject('getMessage'), (error, response, body) => {
@@ -131,12 +131,12 @@ class dialogBotVK {
         this.typeMsg = 1;
       }
         
-      let commandStatus = 0;
+      var commandStatus = 0;
       
       if(this.bodyMsg['body'].toLowerCase().match(this.botName)) {
         this.fullMsg = false;
         
-        for(let i = 0; i < this.commandBot.length; i+=2) {
+        for(var i = 0; i < this.commandBot.length; i+=2) {
           
           this.commandBot[i].split(' ').forEach((item) => {
             if(this.bodyMsg['body'].toLowerCase().match(item)) {
@@ -157,10 +157,10 @@ class dialogBotVK {
       }
       
       if(this.modDialg === 1) {
-        let text = this.bodyMsg['body'].toLowerCase();
+        var text = this.bodyMsg['body'].toLowerCase();
         
         if(text in this.wordBot) {
-          let sizeObject = Object.keys(this.wordBot[text]).length;
+          var sizeObject = Object.keys(this.wordBot[text]).length;
           
           this.sendMessage(this.wordBot[text][parseInt(Math.random() * sizeObject)+1], {
             attachMessage: false,
@@ -176,7 +176,7 @@ class dialogBotVK {
   }
   
   checkLimit(num) {
-    let sender = this.bodyMsg['uid'], status = true;
+    var sender = this.bodyMsg['uid'], status = true;
     
     if(sender in this.limitMsg) {
       if(this.limitMsg[sender]['msg'] === num) {
@@ -225,7 +225,7 @@ class dialogBotVK {
   }
   
   sendMessage(messageText, options, reply) {
-    let optionsDefault = {
+    var optionsDefault = {
       attachMessage: true,
       limitWord: 10,
       attach: false
@@ -243,7 +243,7 @@ class dialogBotVK {
       bodyMsgs = reply;
     }
     
-    let object = {
+    var object = {
       url:                  'https://api.vk.com/method/messages.send',
       method:               'GET',
       qs: {
@@ -262,8 +262,8 @@ class dialogBotVK {
       object['qs']['forward_messages'] = bodyMsgs['mid'];
       
     if(optionsDefault['attach'] !== false) {
-      let attach = '', index = 0;
-      for(let key in optionsDefault['attach']) {
+      var attach = '', index = 0;
+      for(var key in optionsDefault['attach']) {
         attach += optionsDefault['attach'][key];
         if(index > 0) attach += ',';
         index++;
