@@ -1,6 +1,6 @@
 {
   "name": "vk-meme-bot",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "VK meme-generator bot",
   "main": "index.js",
   "scripts": {
