@@ -32,6 +32,7 @@ function createFonts(dir){
 	font.fontpath = require(dir + "/" + font.name + ".json");
 
 	font.sizes = [];
+	font.offset = fontInfo.offset || 0;
 
 	for (var i = 0; i < fontInfo.sizes.length; i++){
 		var size = fontInfo.sizes[i].size;
@@ -92,7 +93,7 @@ function drawText(image, font, metricsInfoFont, text, isUp){
 	var layout = calculateTextMetrics(metricsInfoFont, text, image.bitmap.width);
 	// console.log("calculating line height");
 	// var etalonMetrics = calculateTextMetrics(metricsInfoFont, "A");
-	var offset = metricsInfoFont.size / 4;
+	var offset = metricsInfoFont.size * metricsInfoFont.offset;
 	var height = (metricsInfoFont.size + offset) * layout.lines.length;
 
 	//console.log("metrics: ", layout);
@@ -171,8 +172,8 @@ function makeMeme(memeName, fontName, upperText, lowerText, callback){
 			}
 		}	
 
-		drawText(image, font.jimp, {fontpath: fontQ.fontpath, size: font.size}, upperText, true);
-		drawText(image, font.jimp, {fontpath: fontQ.fontpath, size: font.size}, lowerText, false);
+		drawText(image, font.jimp, {fontpath: fontQ.fontpath, size: font.size, offset: fontQ.offset}, upperText, true);
+		drawText(image, font.jimp, {fontpath: fontQ.fontpath, size: font.size, offset: fontQ.offset}, lowerText, false);
 
 		callback(null, image);
 	});
