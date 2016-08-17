@@ -1,5 +1,4 @@
 var memeGenerator = require("./meme-gen.js");
-var uploader = require("./uploader.js");
 var vkToken = require('vk-token');
 var credentials = require("./auth.json");
 var env = process.env;

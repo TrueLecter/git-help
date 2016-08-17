@@ -94,7 +94,7 @@ function drawText(image, font, metricsInfoFont, text, isUp){
 	var offset = metricsInfoFont.size / 4;
 	var height = (metricsInfoFont.size + offset) * layout.lines.length;
 
-	console.log("metrics: ", layout);
+	//console.log("metrics: ", layout);
 	console.log("offset: ", offset);
 	console.log("height: ", height);
 	
