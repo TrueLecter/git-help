@@ -186,6 +186,14 @@ exports.init = function(){
 	listMemes();
 }
 
+exports.listMemes = function(){
+	return memes;
+}
+
+exports.listFonts = function(){
+	return fonts;
+}
+
 //console.log(createFonts("./fonts/impact/"));
 // exports.init();
 

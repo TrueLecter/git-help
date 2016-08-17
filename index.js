@@ -88,5 +88,20 @@ addCommand('мем', function(message) {
 
 addCommand('рефреш', function (msg){
 	memeGenerator.init();
-	vkBot.sendMessage("20 sec, pls", {attachMessage: false}, reply);			
+	msg.send("20 sec, pls");			
+});
+
+addCommand('список', function (msg){
+	var memes = memeGenerator.listMemes().files;
+	var listMemes = "Memes: \n";
+	for (var i = 0; i < memes.length; i++){
+		listMemes = listMemes + "&#8194;&#8194;&#8194;&#8194;" + memes[i] +"\n";
+	}
+
+	var fonts = memeGenerator.listFonts().files;
+	var listFonts = "Fonts (sizes 8, 16 ... 64): \n";
+	for (var i = 0; i < fonts.length; i++){
+		listFonts = listFonts + "&#8194;&#8194;&#8194;&#8194;" + fonts[i] +"\n";
+	}
+	msg.send(listMemes+listFonts);
 });
