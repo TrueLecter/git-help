@@ -1,29 +1,62 @@
 var memeGenerator = require("./meme-gen.js");
 var uploader = require("./uploader.js");
-var vkWrap = require('./vkBot.js');
+var vkToken = require('vk-token');
 var credentials = require("./auth.json");
 var env = process.env;
 var login = env.BOT_LOGIN || credentials.login;
 var pass = env.BOT_PASS || credentials.password;
+var vk = new(require("vk-io"));
 
-var vkBot = new vkWrap(login, pass);
+var commands = [];
+
+var botName = "дрюс";
+
 var fs = require("fs");
 
-try {
-	var tempdir = fs.statSync("temp");
-	if (!tempdir.isDirectory()){
-		fs.mkdir("temp");
-	}
-} catch (e){
-	fs.mkdir("temp");
+vkToken.getAccessToken(login, pass, function(error, token) {
+    vk.setToken(token);
+    vk.longpoll().then(function() {
+            console.log('Longpoll ready!');
+        })
+        .catch(function(error) {
+            console.error(error);
+        });
+});
+
+vk.on('message', function(msg) {
+    if (msg.text.toLowerCase().match(botName)) {
+        var ready = false;
+        for (var i = 0; !ready && i < commands.length ; i += 2) {
+            commands[i].split(' ').forEach((item) => {
+                if (msg.text.toLowerCase().match(item)) {
+                    commands[i + 1](msg);
+                    ready = true;
+                }
+            });
+        }
+    }
+    console.log('Got message:', msg.text);
+});
+
+function addCommand(command, callback){
+	commands.push(command, callback);
 }
 
-vkBot.authBot();
+try {
+    var tempdir = fs.statSync("temp");
+    if (!tempdir.isDirectory()) {
+        fs.mkdir("temp");
+    }
+} catch (e) {
+    fs.mkdir("temp");
+}
+
+//vkBot.authBot();
 memeGenerator.init();
 
-vkBot.addCommand('мем', function() {
-	var reply = vkBot.bodyMsg;
-	var msg = vkBot.bodyMsg.body;
+addCommand('мем', function(message) {
+	var reply = message;
+	var msg = message.text;
 	var params = msg.split(' ');
 	var memeName = params[2];
 	var font = params[3];
@@ -33,34 +66,28 @@ vkBot.addCommand('мем', function() {
 	var lower = ""+found[1];
 	memeGenerator.makeMeme(memeName, font, upper.substring(1, upper.length - 1), lower.substring(1, lower.length-1), function(err, image){
 		if (err){
-			vkBot.sendMessage(err, {attachMessage: false});
+			message.send(err);
 			return;
 		}
 		var path = "./temp/"+Date.now()+".png";
 		image.write(path, function(err, image){
 			if (!err){
-				//vkBot.sendMessage("YAY! " + path, {attachMessage: false});
-				uploader.upload(path, vkBot.token, function (err, response){
-					if (err){
-						vkBot.sendMessage("oshibka", {attachMessage: false});
-						vkBot.sendMessage(err, {attachMessage: false});
-						console.log(err);
-						return;
-					}
-					console.log("Sending message for ", reply);
-					vkBot.sendMessage("", {attachMessage: false, attach:{photo: "photo" + response.response[0].owner_id + "_" + response.response[0].id}}, reply);
+				vk.upload.album({
+					album_id: 234680370,
+					file: path
+				}).then((images) => images[0]).then((image) => {
+					message.send({attach: 'photo' + image.owner_id + "_" + image.id});
 					fs.unlink(path);
 				});
 			} else {
-				vkBot.sendMessage("oshibka", {attachMessage: false});
+				vkBot.sendMessage("oshibka", {attachMessage: false}, reply);
 				console.log(err);
 			}
 		});
 	});
-	//console.log("msg", vkBot.bodyMsg);
 });
 
-vkBot.addCommand('рефреш', function (){
+addCommand('рефреш', function (msg){
 	memeGenerator.init();
-	vkBot.sendMessage("20 sec, pls", {attachMessage: false});			
+	vkBot.sendMessage("20 sec, pls", {attachMessage: false}, reply);			
 });

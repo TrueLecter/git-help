@@ -12,6 +12,11 @@
     "fontpath-wordwrap": "^1.0.1",
     "jimp": "^0.2.27",
     "load-bmfont": "^1.2.3",
-    "request": "^2.74.0"
+    "request": "^2.74.0",
+    "vk-io": "^2.1.5",
+    "vk-token": "^0.1.2"
+  },
+  "optionalDependencies": {
+    "font-converter": "github:truelecter/meme-bot-font-converter"
   }
 }
