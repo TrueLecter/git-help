@@ -39,6 +39,7 @@ function createFonts(dir){
 		font[size] = {};
 		font[size].success = true;
 		font[size].jimp = null;
+		font[size].size = size;
 		Jimp.loadFont(dir+"/"+fontInfo.sizes[i].filename, getJimpCallback(font, size));
 	}
 
@@ -129,7 +130,8 @@ function makeMeme(memeName, fontName, upperText, lowerText, callback){
 
 	//console.log(fontQ);
 
-	var font = fontQ.getFontForSize(parseInt(fontInfo[1]));
+	var size = fontInfo[1] || 64;
+	var font = fontQ.getFontForSize(parseInt(size));
 	
 	var image = meme.getRandomImage();
 	
@@ -169,8 +171,8 @@ function makeMeme(memeName, fontName, upperText, lowerText, callback){
 			}
 		}	
 
-		drawText(image, font.jimp, {fontpath: fontQ.fontpath, size: parseInt(fontInfo[1])}, upperText, true);
-		drawText(image, font.jimp, {fontpath: fontQ.fontpath, size: parseInt(fontInfo[1])}, lowerText, false);
+		drawText(image, font.jimp, {fontpath: fontQ.fontpath, size: font.size}, upperText, true);
+		drawText(image, font.jimp, {fontpath: fontQ.fontpath, size: font.size}, lowerText, false);
 
 		callback(null, image);
 	});
